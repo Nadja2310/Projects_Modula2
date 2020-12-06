@@ -63,11 +63,11 @@ class OurArrayListTest {
     @Test
     public void testGetAndAddLast_addSeveralElements_correctOrderOfElements() {
         String[] str = new String[10];
-        int j=0;
+        int j = 0;
         for (char i = 65; i < 70; i++) {
             list.addLast("str " + i);
             str[j] = "str " + i;
-        j++;
+            j++;
         }
 
         for (int i = 0; i < 10; i++) {
@@ -87,10 +87,10 @@ class OurArrayListTest {
         assertThrows(IndexOutOfBoundsException.class, () -> list.removeById(10));
     }
 
-   @Test
+    @Test
     public void testRemoveById_addCapacityNumberElementsAndRemoveLast_correct() {
 
-     createArrayList(16);
+        createArrayList(16);
 
         assertEquals("symbol P", list.removeById(15));
         assertEquals(15, list.size());
@@ -105,15 +105,15 @@ class OurArrayListTest {
     public void testRemoveById_addCapacityNumberElementsAndRemoveFirst_correct() {
 
         for (int i = 0; i < 16; i++) {
-            list.addLast("symbol "+i);
+            list.addLast("symbol " + i);
         }
 
         assertEquals("symbol 0", list.removeById(0));
         assertEquals(15, list.size());
         assertEquals("symbol 15", list.get(14));
 
-        for (int i = 14; i <list.size(); i++) {
-            assertEquals("symbol "+ (i+1), list.get(i));
+        for (int i = 1; i < list.size(); i++) {
+            assertEquals("symbol " + (i + 1), list.get(i));
         }
 
         assertThrows(IndexOutOfBoundsException.class, () -> list.get(15));
@@ -121,38 +121,38 @@ class OurArrayListTest {
         assertThrows(IndexOutOfBoundsException.class, () -> list.removeById(15));
     }
 
-        @Test
-        public void testRemoveById_addCapacityNumberElementsAndRemoveIntermediate_correct() {
+    @Test
+    public void testRemoveById_addCapacityNumberElementsAndRemoveIntermediate_correct() {
 
-            for (int i = 0; i < 16; i++) {
-                list.addLast("symbol "+i);
-            }
-
-            assertEquals("symbol 5", list.removeById(5));
-            assertEquals(15, list.size());
-
-            for (int i = 0; i < 5; i++) {
-                assertEquals("symbol "+i, list.get(i));
-            }
-
-            for (int i = 5; i < list.size(); i++) {
-                assertEquals("symbol "+(i + 1), list.get(i));
-            }
-
-            assertThrows(IndexOutOfBoundsException.class, () -> list.get(17));
-            assertThrows(IndexOutOfBoundsException.class, () -> list.set(17, "111"));
-            assertThrows(IndexOutOfBoundsException.class, () -> list.removeById(17));
+        for (int i = 0; i < 16; i++) {
+            list.addLast("symbol " + i);
         }
 
-         @Test
-        public void testAddLast_addInitialCapacityPlusOneElements_correctSizAndCapacity() {
-             for (int i = 0; i < 17; i++) {
-                 list.addLast("symbol "+i);
-             }
+        assertEquals("symbol 5", list.removeById(5));
+        assertEquals(15, list.size());
 
-            assertEquals(17, list.size());
-            assertEquals(32, list.source.length);
+        for (int i = 0; i < 5; i++) {
+            assertEquals("symbol " + i, list.get(i));
         }
+
+        for (int i = 5; i < list.size(); i++) {
+            assertEquals("symbol " + (i + 1), list.get(i));
+        }
+
+        assertThrows(IndexOutOfBoundsException.class, () -> list.get(17));
+        assertThrows(IndexOutOfBoundsException.class, () -> list.set(17, "111"));
+        assertThrows(IndexOutOfBoundsException.class, () -> list.removeById(17));
+    }
+
+    @Test
+    public void testAddLast_addInitialCapacityPlusOneElements_correctSizAndCapacity() {
+        for (int i = 0; i < 17; i++) {
+            list.addLast("symbol " + i);
+        }
+
+        assertEquals(17, list.size());
+        assertEquals(32, list.source.length);
+    }
 
     @Test
     public void testSet_toFirstIndex() {
@@ -217,5 +217,61 @@ class OurArrayListTest {
         assertEquals("symbol KK", list.get(2));
     }
 
+    @Test
+    public void testRemove_RemoveIntermediate_correct() {
+
+        for (int i = 0; i < 16; i++) {
+            list.addLast("symbol " + i);
+        }
+
+        String removeElement = "symbol 5";
+        assertTrue(list.remove(removeElement));
+        assertEquals(15, list.size());
+
+        for (int i = 0; i < 5; i++) {
+            assertEquals("symbol " + i, list.get(i));
+        }
+
+        for (int i = 5; i < list.size(); i++) {
+            assertEquals("symbol " + (i + 1), list.get(i));
+        }
+    }
+
+    @Test
+    public void testRemove_RemoveFirst_correct() {
+
+        for (int i = 0; i < 16; i++) {
+            list.addLast("symbol " + i);
+        }
+
+        assertTrue(list.remove("symbol 0"));
+        assertEquals(15, list.size());
+        assertEquals("symbol 15", list.get(14));
+
+        for (int i = 1; i < list.size(); i++) {
+            assertEquals("symbol " + (i + 1), list.get(i));
+        }
+    }
+
+    @Test
+    public void testRemove_RemoveLast_correct() {
+
+        createArrayList(16);
+
+        assertTrue(list.remove("symbol P"));
+        assertEquals(15, list.size());
+
+    }
+
+    @Test
+    public void testContains_First_Intermediate_Last_correct() {
+
+        createArrayList(16);
+
+        assertTrue(list.contains("symbol A"));
+        assertTrue(list.contains("symbol C"));
+        assertTrue(list.contains("symbol P"));
+
+    }
 
 }

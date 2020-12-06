@@ -1,6 +1,6 @@
 package de.telran;
 
-public class OurArrayList<Type> implements OurList<Type>{
+public class OurArrayList<Type> implements OurList<Type> {
 
     private static final int INITIAL_CAPACITY = 16;
 
@@ -46,27 +46,27 @@ public class OurArrayList<Type> implements OurList<Type>{
 
     @Override
     public Type removeById(int index) {
-       if (index >= size || index < 0)
+        if (index >= size || index < 0)
             throw new IndexOutOfBoundsException();
 
       /*  Type res = (Type) source[index];
         System.arraycopy(source, index + 1, source, index, size - index - 1);
-        size--;
+        source[--size] = null;
         return res;
         */
 
         Object oldValue = source[index];
-       if (index == size - 1) {
+        if (index == size - 1) {
             size--;
             source[size - 1] = 0;
             return (Type) oldValue;
         }
 
-            for (int i = index; i < size - 1; i++) {
-                source[i] = source[i + 1];
-            }
-            source[size - 1] = 0;
-            size--;
+        for (int i = index; i < size - 1; i++) {
+            source[i] = source[i + 1];
+        }
+        source[size - 1] = null;
+        size--;
 
         return (Type) oldValue;
     }
@@ -78,9 +78,29 @@ public class OurArrayList<Type> implements OurList<Type>{
 
     @Override
     public void clear() {
-        for (int i = 0; i < size; i++)
-            source[i] = 0;
-
+        source = new Object[INITIAL_CAPACITY];
         size = 0;
+    }
+
+    @Override
+    public boolean remove(Type obj) {
+
+        for (int i = 0; i < size; i++) {
+            if (source[i].equals(obj)) {
+                System.arraycopy(source, i + 1, source, i, size - i - 1);
+                source[--size] = null;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean contains(Type obj) {
+        for (int i = 0; i < size; i++) {
+            if (source[i].equals(obj))
+                return true;
+        }
+        return false;
     }
 }

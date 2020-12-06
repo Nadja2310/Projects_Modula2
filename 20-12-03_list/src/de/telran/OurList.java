@@ -39,4 +39,19 @@ public interface OurList<Type> {
          * makes 'this' empty
          */
         void clear();
+
+        /**
+         * remove the obj if there is a element in the list which 'equals' to the obj.
+         * the method must remove only first such element.
+         * @param obj to remove
+         * @return true if the obj was found and removed, false otherwise
+         */
+        boolean remove(Type obj);
+
+        /**
+         *
+         * @param obj
+         * @return
+         */
+        boolean contains(Type obj);
     }
