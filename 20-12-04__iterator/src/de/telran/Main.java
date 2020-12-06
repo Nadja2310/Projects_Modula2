@@ -1,4 +1,5 @@
 package de.telran;
+
 import java.util.Iterator;
 
 public class Main {
@@ -19,6 +20,12 @@ public class Main {
             int current = inverseArrayIterator.next();
             System.out.println(current);
         }
-
+        Iterator<Integer> sortArrayIterator = new SortArrayIterator(array);
+        System.out.println("Sort");
+        while (sortArrayIterator.hasNext()) {
+            int current = sortArrayIterator.next();
+            System.out.println(current);
+        }
+        System.out.println(sortArrayIterator.toString());
     }
 }
