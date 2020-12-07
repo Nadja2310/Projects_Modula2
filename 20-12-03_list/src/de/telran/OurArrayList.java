@@ -1,5 +1,8 @@
 package de.telran;
 
+import java.util.Arrays;
+import java.util.Iterator;
+
 public class OurArrayList<Type> implements OurList<Type> {
 
     private static final int INITIAL_CAPACITY = 16;
@@ -84,11 +87,21 @@ public class OurArrayList<Type> implements OurList<Type> {
 
     @Override
     public boolean remove(Type obj) {
+        if (obj == null) {
+            for (int i = 0; i < size; i++) {
+                if (source[i] == null) {
+                    removeById(i);
+                    return true;
+                }
+            }
+            return false;
+        }
 
         for (int i = 0; i < size; i++) {
             if (source[i].equals(obj)) {
-                System.arraycopy(source, i + 1, source, i, size - i - 1);
-                source[--size] = null;
+             //   System.arraycopy(source, i + 1, source, i, size - i - 1);
+             //   source[--size] = null;
+                removeById(i);
                 return true;
             }
         }
@@ -97,10 +110,106 @@ public class OurArrayList<Type> implements OurList<Type> {
 
     @Override
     public boolean contains(Type obj) {
+        if (obj == null) {
+            for (int i = 0; i < size; i++) {
+                if (source[i] == null)
+                    return true;
+            }
+            return false;
+        }
+
         for (int i = 0; i < size; i++) {
             if (source[i].equals(obj))
                 return true;
         }
         return false;
     }
+
+    @Override
+    public Iterator<Type> forwardIterator() {
+        Iterator<Type> iterator = new ForwardIterator();
+        return iterator;
+    }
+
+    @Override
+    public Iterator<Type> backwardIterator() {
+        return null;
+    }
+
+    private class ForwardIterator implements Iterator<Type> {
+
+        int currentIndex = 0;
+
+        @Override
+        public boolean hasNext() {
+            return currentIndex < size;
+        }
+
+        @Override
+        public Type next() {
+            if (currentIndex >= size)
+                throw new IndexOutOfBoundsException();
+
+            Type res = (Type) source[currentIndex];
+            currentIndex++;
+            return res;
+        }
+    }
+   static class BackwardIterator<Type> implements Iterator<Type> {
+
+        Object[] source;
+        int currentIndex = 0;
+        private int size;
+
+
+        public BackwardIterator(OurArrayList ourArrayList) {
+            this.source= Arrays.copyOf(ourArrayList.source,ourArrayList.size());
+            this.size=ourArrayList.size();
+            currentIndex=size-1;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return currentIndex >-1;
+        }
+
+        @Override
+        public Type next() {
+            if (currentIndex >= size)
+                throw new IndexOutOfBoundsException();
+
+            Type res = (Type) source[currentIndex];
+            currentIndex--;
+            return res;
+        }
+    }
 }
+
+ /*class backwardIterator<Type> implements Iterator<Type> {
+
+    Object[] source;
+    int currentIndex = 0;
+    private int size;
+
+
+    public backwardIterator(OurArrayList ourArrayList) {
+        this.source= Arrays.copyOf(ourArrayList.source,ourArrayList.size());
+        this.size=ourArrayList.size();
+        currentIndex=size-1;
+    }
+
+    @Override
+    public boolean hasNext() {
+        return currentIndex >-1;
+    }
+
+    @Override
+    public Type next() {
+        if (currentIndex >= size)
+            throw new IndexOutOfBoundsException();
+
+        Type res = (Type) source[currentIndex];
+        currentIndex--;
+        return res;
+    }
+}*/

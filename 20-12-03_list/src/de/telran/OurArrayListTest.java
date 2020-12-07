@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class OurArrayListTest {
 
-    OurArrayList<String> list = new OurArrayList<>();
+    OurArrayList<String> list = new OurArrayList<String>();
 
     OurArrayList createArrayList(int index) {
 
@@ -271,6 +271,38 @@ class OurArrayListTest {
         assertTrue(list.contains("symbol A"));
         assertTrue(list.contains("symbol C"));
         assertTrue(list.contains("symbol P"));
+
+    }
+    @Test
+    public void testContains_searchNull_correct() {
+
+        list.addLast("symbol SS");
+        list.addLast(null);
+        list.addLast("symbol KK");
+
+        assertTrue(list.contains(null));
+
+
+    }
+    @Test
+    public void testRemove_Object_Null_true() {
+
+        list.addLast("symbol SS");
+        list.addLast(null);
+        list.addLast("symbol KK");
+
+        assertTrue(list.remove(null));
+
+
+    }
+
+    @Test
+    public void testRemove_Null_WithoutNullElement_false() {
+
+        list.addLast("symbol SS");
+        list.addLast("symbol KK");
+
+        assertFalse(list.remove(null));
 
     }
 
