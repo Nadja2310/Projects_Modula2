@@ -8,7 +8,7 @@ public class OurArrayList<Type> implements OurList<Type> {
     private static final int INITIAL_CAPACITY = 16;
 
     private int size;
-    Object[] source;
+    private Object[] source;
 
     public OurArrayList() {
         source = new Object[INITIAL_CAPACITY];
@@ -24,6 +24,7 @@ public class OurArrayList<Type> implements OurList<Type> {
         //   size++;
     }
 
+    //O(n) where n is size
     void increaseCapacity() {
         int newCapacity = source.length * 2;
         Object[] newSource = new Object[newCapacity];
@@ -32,6 +33,7 @@ public class OurArrayList<Type> implements OurList<Type> {
     }
 
     @Override
+
     public Type get(int index) {
         if (index >= size || index < 0)
             throw new IndexOutOfBoundsException();
@@ -40,6 +42,7 @@ public class OurArrayList<Type> implements OurList<Type> {
     }
 
     @Override
+    //O[1]- the  number of operations is never dependant on the number of element in the list
     public void set(int index, Type value) {
         if (index >= size || index < 0)
             throw new IndexOutOfBoundsException();
@@ -48,6 +51,7 @@ public class OurArrayList<Type> implements OurList<Type> {
     }
 
     @Override
+    //O(n) where n is size
     public Type removeById(int index) {
         if (index >= size || index < 0)
             throw new IndexOutOfBoundsException();
@@ -75,17 +79,20 @@ public class OurArrayList<Type> implements OurList<Type> {
     }
 
     @Override
+    //O(1)
     public int size() {
         return size;
     }
 
     @Override
+    //O(1)
     public void clear() {
         source = new Object[INITIAL_CAPACITY];
         size = 0;
     }
 
     @Override
+    //O(n)-
     public boolean remove(Type obj) {
         if (obj == null) {
             for (int i = 0; i < size; i++) {
@@ -99,8 +106,8 @@ public class OurArrayList<Type> implements OurList<Type> {
 
         for (int i = 0; i < size; i++) {
             if (source[i].equals(obj)) {
-             //   System.arraycopy(source, i + 1, source, i, size - i - 1);
-             //   source[--size] = null;
+                //   System.arraycopy(source, i + 1, source, i, size - i - 1);
+                //   source[--size] = null;
                 removeById(i);
                 return true;
             }
@@ -126,6 +133,7 @@ public class OurArrayList<Type> implements OurList<Type> {
     }
 
     @Override
+    //O(n)
     public Iterator<Type> forwardIterator() {
         Iterator<Type> iterator = new ForwardIterator();
         return iterator;
@@ -133,7 +141,13 @@ public class OurArrayList<Type> implements OurList<Type> {
 
     @Override
     public Iterator<Type> backwardIterator() {
-        return null;
+        Iterator<Type> iterator = new BackwardIterator<>((Type[]) source, size);
+        return iterator;
+    }
+
+    @Override
+    public Iterator<Type> iterator() {
+        return forwardIterator();
     }
 
     private class ForwardIterator implements Iterator<Type> {
@@ -155,61 +169,33 @@ public class OurArrayList<Type> implements OurList<Type> {
             return res;
         }
     }
-   static class BackwardIterator<Type> implements Iterator<Type> {
 
-        Object[] source;
+    private static class BackwardIterator<O> implements Iterator<O> {
+
+        O[] source;
         int currentIndex = 0;
-        private int size;
 
 
-        public BackwardIterator(OurArrayList ourArrayList) {
-            this.source= Arrays.copyOf(ourArrayList.source,ourArrayList.size());
-            this.size=ourArrayList.size();
-            currentIndex=size-1;
+        public BackwardIterator(O[] source, int size) {
+            //this.source= Arrays.copyOf(ourArrayList.source,ourArrayList.size());
+            this.source = source;
+            currentIndex = size - 1;
         }
 
         @Override
         public boolean hasNext() {
-            return currentIndex >-1;
+            return currentIndex > -1;
         }
 
         @Override
-        public Type next() {
-            if (currentIndex >= size)
+        public O next() {
+            if (currentIndex < 0)
                 throw new IndexOutOfBoundsException();
 
-            Type res = (Type) source[currentIndex];
+            O res = source[currentIndex];
             currentIndex--;
             return res;
         }
     }
 }
 
- /*class backwardIterator<Type> implements Iterator<Type> {
-
-    Object[] source;
-    int currentIndex = 0;
-    private int size;
-
-
-    public backwardIterator(OurArrayList ourArrayList) {
-        this.source= Arrays.copyOf(ourArrayList.source,ourArrayList.size());
-        this.size=ourArrayList.size();
-        currentIndex=size-1;
-    }
-
-    @Override
-    public boolean hasNext() {
-        return currentIndex >-1;
-    }
-
-    @Override
-    public Type next() {
-        if (currentIndex >= size)
-            throw new IndexOutOfBoundsException();
-
-        Type res = (Type) source[currentIndex];
-        currentIndex--;
-        return res;
-    }
-}*/
