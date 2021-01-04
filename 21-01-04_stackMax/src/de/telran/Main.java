@@ -7,6 +7,10 @@ public class Main {
         stackMax.addLast(222);
         stackMax.addLast(2);
         stackMax.addLast(32);
+        stackMax.addLast(222);
+        stackMax.addLast(221);
+        stackMax.removeLast();
+
         System.out.println(stackMax.getMax());
 
     }
