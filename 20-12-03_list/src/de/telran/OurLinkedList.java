@@ -1,5 +1,6 @@
 package de.telran;
 
+import java.util.Comparator;
 import java.util.Iterator;
 
 public class OurLinkedList<T> implements OurList<T> {
@@ -158,6 +159,45 @@ public class OurLinkedList<T> implements OurList<T> {
     }
 
     @Override
+    public void sort(Comparator<T> comparator) {
+            Object[] copy = new Object[size];
+
+            int i = 0;
+            for (T elt : this) {
+                copy[i++] = elt;
+            }
+            // this is going to be a sort of the copy
+        int start = 0;
+        int end = copy.length - 1;
+        while (start <= end) {
+            int count = 0;
+            for (i = start; i < end; i++) {
+                if (comparator.compare((T) copy[i], (T)copy[i + 1]) > 0) {
+                    T temp = (T) copy[i];
+                    copy[i] = copy[i+1];
+                    copy[i+1] = temp;
+                    count++;
+                }
+            }
+            end--;
+            for (i = end; i > start; i--) {
+                if (comparator.compare((T)copy[i], (T)copy[i - 1]) < 0) {
+                    T temp = (T) copy[i];
+                    copy[i] = copy[i-1];
+                    copy[i-1] = temp;
+                    count++;
+                }
+            }
+            start++;
+            if (count == 0) break;
+        }
+            this.clear();
+            for (Object elt : copy) {
+                this.addLast((T) elt);
+            }
+    }
+
+    @Override
     public Iterator<T> iterator() {
         return forwardIterator();
     }
@@ -168,7 +208,8 @@ public class OurLinkedList<T> implements OurList<T> {
 
         @Override
         public boolean hasNext() {
-            return (first!=null?(currentNode != null || currentNode==last):false);
+            //return (first!=null?(currentNode != null || currentNode==last):false);
+            return currentNode != null;
         }
 
         @Override
@@ -177,10 +218,11 @@ public class OurLinkedList<T> implements OurList<T> {
                   throw new IndexOutOfBoundsException();
 
             T res = currentNode.element;
-            if (currentNode == last)
+            currentNode = currentNode.next;
+            /*if (currentNode == last)
                 currentNode = null;
             else
-                currentNode = currentNode.next;
+                currentNode = currentNode.next;*/
             return res;
         }
     }
@@ -191,7 +233,8 @@ public class OurLinkedList<T> implements OurList<T> {
 
         @Override
         public boolean hasNext() {
-            return (last!=null?(currentNode != null || currentNode==first):false);
+           // return (last!=null?(currentNode != null || currentNode==first):false);
+            return currentNode != null;
         }
 
         @Override

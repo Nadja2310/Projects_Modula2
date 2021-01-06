@@ -20,5 +20,10 @@ public class MainLinkedList {
         while (iterator.hasNext()) {
             System.out.println(iterator.next());
         }
+        Iterator<String> stringIterator = strings.iterator();
+        while (stringIterator.hasNext()) {
+            String str = stringIterator.next();
+            System.out.println(str);
+        }
     }
 }

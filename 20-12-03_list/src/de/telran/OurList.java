@@ -1,5 +1,6 @@
 package de.telran;
 
+import java.util.Comparator;
 import java.util.Iterator;
 
 public interface OurList<Type> extends Iterable<Type>{
@@ -67,4 +68,10 @@ public interface OurList<Type> extends Iterable<Type>{
      * @return iterator object which iterates from the end to the beginning of the list
      */
     Iterator<Type> backwardIterator();
+
+    /**
+     * sorts the list according to the 'comparator' rule
+     * @param comparator the rule to sort the list
+     */
+    void sort(Comparator<Type> comparator);
 }

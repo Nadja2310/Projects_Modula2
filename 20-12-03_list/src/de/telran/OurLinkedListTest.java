@@ -118,4 +118,24 @@ public class OurLinkedListTest extends OurListTest{
             iterator.next();
         });
     }
+
+    @Test
+    public void test_Sort_Integer() {
+
+        OurList<Integer> arr = new OurLinkedList<>();
+        arr.addLast(5);
+        arr.addLast(15);
+        arr.addLast(1);
+        arr.addLast(0);
+        arr.addLast(102);
+        arr.addLast(1102);
+        arr.sort(new IntegerBasicComparator());
+
+        int[] arrtest={0,1,5,15,102,1102};
+        for (int i = 0; i < arrtest.length; i++) {
+            assertEquals(arr.get(i),arrtest[i]);
+            System.out.println(arr.get(i));
+        }
+
+    }
 }

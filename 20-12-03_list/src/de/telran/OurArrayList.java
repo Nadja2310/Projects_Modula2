@@ -1,6 +1,7 @@
 package de.telran;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Iterator;
 
 public class OurArrayList<Type> implements OurList<Type> {
@@ -146,6 +147,52 @@ public class OurArrayList<Type> implements OurList<Type> {
     }
 
     @Override
+    public String toString() {
+        return "OurArrayList{" +
+                "source=" + Arrays.toString(source) +
+                '}';
+    }
+
+    @Override
+    public void sort(Comparator<Type> comparator) {
+        Object[] copy = new Object[size];
+
+        int i = 0;
+        for (Type elt : this) {
+            copy[i++] = elt;
+        }
+        // this is going to be a sort of the copy
+        int start = 0;
+        int end = copy.length - 1;
+        while (start <= end) {
+            int count = 0;
+            for (i = start; i < end; i++) {
+                if (comparator.compare((Type) copy[i], (Type)copy[i + 1]) > 0) {
+                    Type temp = (Type) copy[i];
+                    copy[i] = copy[i+1];
+                    copy[i+1] = temp;
+                    count++;
+                }
+            }
+            end--;
+            for (i = end; i > start; i--) {
+                if (comparator.compare((Type)copy[i], (Type)copy[i - 1]) < 0) {
+                    Type temp = (Type) copy[i];
+                    copy[i] = copy[i-1];
+                    copy[i-1] = temp;
+                    count++;
+                }
+            }
+            start++;
+            if (count == 0) break;
+        }
+        this.clear();
+        for (Object elt : copy) {
+            this.addLast((Type) elt);
+        }
+    }
+
+    @Override
     public Iterator<Type> iterator() {
         return forwardIterator();
     }
@@ -196,6 +243,8 @@ public class OurArrayList<Type> implements OurList<Type> {
             currentIndex--;
             return res;
         }
+
+
     }
 }
 
