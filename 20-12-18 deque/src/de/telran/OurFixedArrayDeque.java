@@ -1,5 +1,7 @@
 package de.telran;
 
+import java.util.Iterator;
+
 public class OurFixedArrayDeque<T> implements OurDeque<T> {
 
     private int firstEltId;
@@ -10,7 +12,6 @@ public class OurFixedArrayDeque<T> implements OurDeque<T> {
     public OurFixedArrayDeque(int initialCapacity) {
         this.source = new Object[initialCapacity];
         this.capacity = source.length;
-        firstEltId = this.capacity / 2;
     }
 
     void increaseCapacity() {
@@ -30,15 +31,21 @@ public class OurFixedArrayDeque<T> implements OurDeque<T> {
             source[size++] = elt;*/
             throw new DequeOverflowException();
         }
-        if (firstEltId > 0) {
-            source[--firstEltId] = elt;
+     if (firstEltId > 0) {
+            firstEltId--;
         } else
-            throw new DequeOverflowException();
+            firstEltId=capacity-1;
+
+        //или firstEltId=(firstEltId+capacity-1)%capacity;
+        source[firstEltId]=elt;
         size++;
     }
 
     @Override
     public T getFirst() {
+        if (size==0)
+            throw new EmptyDequeException();
+
         return (T) source[firstEltId];
     }
 
@@ -67,6 +74,9 @@ public class OurFixedArrayDeque<T> implements OurDeque<T> {
 
     @Override
     public T getLast() {
+        if (size==0)
+            throw new EmptyDequeException();
+
         int lastIndex = (firstEltId + size - 1) % capacity;
         return (T) source[lastIndex];
     }
@@ -86,5 +96,39 @@ public class OurFixedArrayDeque<T> implements OurDeque<T> {
     @Override
     public int size() {
         return size;
+    }
+
+    @Override
+    public Iterator<T> forwardIterator() {
+        Iterator<T> iterator = new ForwardIterator();
+        return iterator;
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return forwardIterator();
+    }
+
+    private class ForwardIterator implements Iterator<T> {
+        private int currentIndex=firstEltId;
+        //private int lastIndex=(firstEltId+size-1)%capacity;
+        private int sizeIterator=size;
+
+        @Override
+        public boolean hasNext() {
+            //return (currentIndex<=lastIndex && size>0);
+            return (sizeIterator>0);
+        }
+
+        @Override
+        public T next() {
+            if (currentIndex > size)
+                throw new IndexOutOfBoundsException();
+
+            T res = (T) source[currentIndex];
+            currentIndex=(currentIndex+1)%capacity;
+            sizeIterator--;
+            return res;
+        }
     }
 }

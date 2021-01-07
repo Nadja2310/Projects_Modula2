@@ -1,6 +1,8 @@
 package de.telran;
 
-public interface OurDeque<T> {
+import java.util.Iterator;
+
+public interface OurDeque<T> extends Iterable<T>{
     /**
      * @param elt
      * @throws DequeOverflowException if the implementation may contain limited number of elements, than the method throws
@@ -18,4 +20,7 @@ public interface OurDeque<T> {
     T removeLast();
 
     int size();
+
+    Iterator<T> forwardIterator();
+
 }
