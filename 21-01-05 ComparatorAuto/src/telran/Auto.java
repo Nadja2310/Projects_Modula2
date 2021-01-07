@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class Main {
+/*public class Main {
     public static void main(String[] args) {
         Auto mazda = new Auto("Mazda", 4000, 2020);
         Auto opel = new Auto("Opel", 4000, 2019);
@@ -28,9 +28,9 @@ public class Main {
         autos.sort(autoComparator);
         System.out.println(autos.toString());
     }
-}
+}*/
 
-class Auto {
+public class Auto {
     String name;
     double mileage;
     int year;
@@ -58,10 +58,24 @@ class AutoComparator implements Comparator<Auto> {
     public int compare(Auto a1, Auto a2) {
         if (a1.mileage != a2.mileage)
             return (int) (a1.mileage - a2.mileage);
-        if ((a1.year == a2.year))
-            return 0;
 
         return a2.year - a1.year;
 
+    }
+}
+
+class MileageComparator implements Comparator<Auto> {
+
+    @Override
+    public int compare(Auto a1, Auto a2) {
+            return (int) (a1.mileage - a2.mileage);
+    }
+}
+
+class YearComparator implements Comparator<Auto> {
+
+    @Override
+    public int compare(Auto a1, Auto a2) {
+        return a2.year - a1.year;
     }
 }

@@ -14,6 +14,7 @@ class OurArrayListTest extends OurListTest {
     public void init() {
         // list=new OurArrayList<>();
         list = new OurArrayList<String>();
+        listInteger = new OurArrayList<Integer>();
 
     }
 

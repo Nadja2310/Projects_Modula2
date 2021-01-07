@@ -74,4 +74,9 @@ public interface OurList<Type> extends Iterable<Type>{
      * @param comparator the rule to sort the list
      */
     void sort(Comparator<Type> comparator);
+
+    // TODO
+    Type max(Comparator<Type> comparator);
+
+    Type min(Comparator<Type> comparator);
 }

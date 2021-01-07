@@ -155,41 +155,41 @@ public class OurArrayList<Type> implements OurList<Type> {
 
     @Override
     public void sort(Comparator<Type> comparator) {
-        Object[] copy = new Object[size];
+        Type[] copy = (Type[]) new Object[size];
 
         int i = 0;
         for (Type elt : this) {
             copy[i++] = elt;
         }
-        // this is going to be a sort of the copy
-        int start = 0;
-        int end = copy.length - 1;
-        while (start <= end) {
-            int count = 0;
-            for (i = start; i < end; i++) {
-                if (comparator.compare((Type) copy[i], (Type)copy[i + 1]) > 0) {
-                    Type temp = (Type) copy[i];
-                    copy[i] = copy[i+1];
-                    copy[i+1] = temp;
-                    count++;
-                }
-            }
-            end--;
-            for (i = end; i > start; i--) {
-                if (comparator.compare((Type)copy[i], (Type)copy[i - 1]) < 0) {
-                    Type temp = (Type) copy[i];
-                    copy[i] = copy[i-1];
-                    copy[i-1] = temp;
-                    count++;
-                }
-            }
-            start++;
-            if (count == 0) break;
-        }
+        //copy: {15, -8, 3}
+
+        Arrays.sort(copy, comparator);
+
+        // copy:{-8, 3, 15}
         this.clear();
-        for (Object elt : copy) {
-            this.addLast((Type) elt);
+        for (Type elt : copy) {
+            this.addLast(elt);
         }
+    }
+
+    @Override
+    public Type max(Comparator<Type> comparator) {
+        Type max = this.get(0);
+        for (int i = 1; i < size; i++) {
+            if (comparator.compare(this.get(i),max) > 0)
+                max = this.get(i);
+        }
+        return max;
+    }
+
+    @Override
+    public Type min(Comparator<Type> comparator) {
+        Type min = this.get(0);
+        for (Type elt : this) {
+            if (comparator.compare(min, elt) < 0)
+                min = elt;
+        }
+        return min;
     }
 
     @Override

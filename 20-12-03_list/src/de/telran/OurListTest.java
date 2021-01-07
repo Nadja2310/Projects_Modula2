@@ -3,12 +3,13 @@ package de.telran;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Comparator;
 import java.util.Iterator;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public abstract class OurListTest {
-    // OurList<Integer> list;
+    OurList<Integer> listInteger;
     OurList<String> list;
 
     @Test
@@ -292,7 +293,43 @@ public abstract class OurListTest {
         assertFalse(list.remove(null));
 
     }
+    @Test
+    public void testComparator_Max_Integer() {
 
+        listInteger.addLast(5);
+        listInteger.addLast(15);
+        listInteger.addLast(1);
+        listInteger.addLast(0);
+        listInteger.addLast(102);
+        listInteger.addLast(1102);
+
+        assertEquals(listInteger.max(new Comparator<Integer>(){
+            @Override
+           public int compare(Integer o1, Integer o2) {
+                return o1-o2;
+            }
+        }),1102);
+
+    }
+    @Test
+    public void testComparator_Min_Integer() {
+
+        listInteger.addLast(5);
+        listInteger.addLast(15);
+        listInteger.addLast(1);
+        listInteger.addLast(-15);
+        listInteger.addLast(-102);
+        listInteger.addLast(1102);
+
+       assertFalse(listInteger.max(new Comparator<Integer>() {
+           @Override
+           public int compare(Integer o1, Integer o2) {
+                return o1-o2;
+           }
+       })==-102);
+
+
+    }
    /* @Test
     public void testForwardIterator_emptyList() {
         OurList<String> strings = new OurArrayList<>();
@@ -400,7 +437,7 @@ public abstract class OurListTest {
         });
     }
 */
-    void createArrayList(int index) {
+    public void createArrayList(int index) {
 
         String symbol = "symbol ";
         for (char i = 65; i < (65 + index); i++) {

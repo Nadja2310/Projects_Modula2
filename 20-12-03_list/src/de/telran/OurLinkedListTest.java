@@ -11,7 +11,7 @@ public class OurLinkedListTest extends OurListTest{
 
     @BeforeEach
     public void init(){
-        // list=new OurArrayList<>();
+        listInteger=new OurLinkedList<Integer>();
         list=new OurLinkedList<String>();
 
     }

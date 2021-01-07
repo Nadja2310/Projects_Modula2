@@ -198,6 +198,26 @@ public class OurLinkedList<T> implements OurList<T> {
     }
 
     @Override
+    public T max(Comparator<T> comparator) {
+        T max = this.get(0);
+        for (int i = 1; i < size; i++) {
+            if (comparator.compare(this.get(i),max) > 0)
+                max = this.get(i);
+        }
+        return max;
+    }
+
+    @Override
+    public T min(Comparator<T> comparator) {
+        T min = this.get(0);
+        for (T elt : this) {
+            if (comparator.compare(min, elt) < 0)
+                min = elt;
+        }
+        return min;
+    }
+
+    @Override
     public Iterator<T> iterator() {
         return forwardIterator();
     }
