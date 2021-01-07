@@ -138,14 +138,14 @@ public class OurFixedArrayDequeTest {
 
         Iterator<Integer> iterator = deque.forwardIterator();
 
-        int i = 0;
+        int i = 1;
         while (iterator.hasNext()) {
-            assertEquals(expected[i], iterator.next());
-            System.out.println(iterator.next());
+           assertEquals(i, iterator.next());
+
             i++;
         }
 
-        assertEquals(2, i);
+        assertEquals(4, i);
     }
 
     @Test

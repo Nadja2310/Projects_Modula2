@@ -8,7 +8,6 @@ public class Main {
     public static void main(String[] args) {
         OurFixedArrayDeque<Integer> deque=new OurFixedArrayDeque<>(6);
 
-       // Iterator<Integer> iterator = deque.forwardIterator();
         int[] expected = {15,3,4};
 
         deque.addLast(1);

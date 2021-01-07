@@ -116,7 +116,7 @@ public class OurFixedArrayDeque<T> implements OurDeque<T> {
 
         @Override
         public boolean hasNext() {
-            //return (currentIndex<=lastIndex && size>0);
+
             return (sizeIterator>0);
         }
 
