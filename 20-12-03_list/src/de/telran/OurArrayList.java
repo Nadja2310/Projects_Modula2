@@ -3,6 +3,7 @@ package de.telran;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class OurArrayList<Type> implements OurList<Type> {
 
@@ -153,7 +154,7 @@ public class OurArrayList<Type> implements OurList<Type> {
                 '}';
     }
 
-    @Override
+   /* @Override
     public void sort(Comparator<Type> comparator) {
         Type[] copy = (Type[]) new Object[size];
 
@@ -173,25 +174,24 @@ public class OurArrayList<Type> implements OurList<Type> {
     }
 
     @Override
-    public Type max(Comparator<Type> comparator) {
+    public Type max(Comparator<Type> comparator) {//video 08/01/2021
+        if(size==0)
+            throw new NoSuchElementException();
+
         Type max = this.get(0);
-        for (int i = 1; i < size; i++) {
-            if (comparator.compare(this.get(i),max) > 0)
-                max = this.get(i);
+        for (Type elt : this)  {
+            if (comparator.compare(elt,max) > 0)
+                max = elt;
         }
         return max;
     }
 
     @Override
     public Type min(Comparator<Type> comparator) {
-        Type min = this.get(0);
-        for (Type elt : this) {
-            if (comparator.compare(min, elt) < 0)
-                min = elt;
-        }
-        return min;
-    }
 
+        return max(comparator.reversed());
+    }
+*/
     @Override
     public Iterator<Type> iterator() {
         return forwardIterator();

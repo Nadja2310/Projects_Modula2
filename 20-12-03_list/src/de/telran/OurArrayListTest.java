@@ -125,42 +125,7 @@ class OurArrayListTest extends OurListTest {
         });
     }
 
-    @Test
-    public void test_Sort_String() {
-
-        OurList<String> strings = new OurArrayList<>();
-        strings.addLast("Evgeny");
-        strings.addLast("Borisovich");
-        strings.addLast("Vladislava");
-        strings.addLast("Evgenievna");
-        strings.sort(new StringBasicComparator());
-        System.out.println(strings);
-        String[] stringsTest={"Borisovich","Evgenievna", "Evgeny", "Vladislava"};
-
-        for (int i = 0; i < stringsTest.length; i++) {
-            assertEquals(strings.get(i),stringsTest[i]);
-        }
-
-    }
-    @Test
-    public void test_Sort_Integer() {
-
-        OurList<Integer> arr = new OurArrayList<>();
-        arr.addLast(5);
-        arr.addLast(15);
-        arr.addLast(1);
-        arr.addLast(102);
-        arr.sort(new IntegerBasicComparator());
-        System.out.println(arr);
-
-        int[] arrtest={1,5,15,102};
-        for (int i = 0; i < arrtest.length; i++) {
-            assertEquals(arr.get(i),arrtest[i]);
-        }
-
-    }
-
-    //@BeforeEachэтот метод будет запускаться перед каждым тестом. в него можно записать все что нужно запустить илди заполнить
+      //@BeforeEachэтот метод будет запускаться перед каждым тестом. в него можно записать все что нужно запустить илди заполнить
     //для выполнения тестов
 
 

@@ -158,7 +158,7 @@ public class OurLinkedList<T> implements OurList<T> {
         return iterator;
     }
 
-    @Override
+  /*  @Override
     public void sort(Comparator<T> comparator) {
             Object[] copy = new Object[size];
 
@@ -215,7 +215,7 @@ public class OurLinkedList<T> implements OurList<T> {
                 min = elt;
         }
         return min;
-    }
+    }*/
 
     @Override
     public Iterator<T> iterator() {

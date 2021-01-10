@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -293,6 +294,18 @@ public abstract class OurListTest {
         assertFalse(list.remove(null));
 
     }
+
+    @Test
+    public void test_max_severalString() {
+        String[] expected = {"Evgenievna", "Vladislava", "Borisovich", "Evgeny"};
+
+        list.addLast("Evgeny");
+        list.addLast("Borisovich");
+        list.addLast("Vladislava");
+        list.addLast("Evgenievna");
+        assertEquals("Vladislava", list.max());
+    }
+
     @Test
     public void testComparator_Max_Integer() {
 
@@ -303,7 +316,7 @@ public abstract class OurListTest {
         listInteger.addLast(102);
         listInteger.addLast(1102);
 
-        assertEquals(listInteger.max(new Comparator<Integer>(){
+        assertEquals(listInteger.maxComparator(new Comparator<Integer>(){
             @Override
            public int compare(Integer o1, Integer o2) {
                 return o1-o2;
@@ -321,7 +334,7 @@ public abstract class OurListTest {
         listInteger.addLast(-102);
         listInteger.addLast(1102);
 
-       assertFalse(listInteger.max(new Comparator<Integer>() {
+       assertFalse(listInteger.maxComparator(new Comparator<Integer>() {
            @Override
            public int compare(Integer o1, Integer o2) {
                 return o1-o2;
@@ -330,113 +343,51 @@ public abstract class OurListTest {
 
 
     }
-   /* @Test
-    public void testForwardIterator_emptyList() {
-        OurList<String> strings = new OurArrayList<>();
-        Iterator<String> iterator = strings.forwardIterator();
-
-        assertFalse(iterator.hasNext());
-       assertThrows(IndexOutOfBoundsException.class, () -> {
-            iterator.next();
-        });
+    @Test
+    public void test_maxComparator_emptyList() {
+        assertThrows(NoSuchElementException.class, () -> listInteger.maxComparator(new IntegerBasicComparator()));
     }
 
     @Test
-    public void testForwardIterator_oneElement() {
-        String[] expected = {"Evgeny Borisovich"};
-
-        OurList<String> strings = new OurArrayList<>();
-        strings.addLast("Evgeny Borisovich");
-
-        Iterator<String> iterator = strings.forwardIterator();
-
-        int i = 0;
-        while (iterator.hasNext()) {
-            assertEquals(expected[i++], iterator.next());
-        }
-
-        assertThrows(IndexOutOfBoundsException.class, () -> {
-            iterator.next();
-        });
+    public void test_minComparator_emptyList() {
+        IntegerBasicComparator comparator=new IntegerBasicComparator();
+        assertThrows(NoSuchElementException.class, () -> listInteger.minComparator(comparator));
     }
 
     @Test
-    public void testForwardIterator_severalElements() {
-        String[] expected = {"Evgeny", "Borisovich", "Vladislava", "Evgenievna"};
+    public void test_Sort_String() {
 
-        OurList<String> strings = new OurArrayList<>();
-        strings.addLast("Evgeny");
-        strings.addLast("Borisovich");
-        strings.addLast("Vladislava");
-        strings.addLast("Evgenievna");
 
-        Iterator<String> iterator = strings.forwardIterator();
+        list.addLast("Evgeny");
+        list.addLast("Borisovich");
+        list.addLast("Vladislava");
+        list.addLast("Evgenievna");
+        list.sort(new StringBasicComparator());
+        System.out.println(list);
+        String[] stringsTest={"Borisovich","Evgenievna", "Evgeny", "Vladislava"};
 
-        int i = 0;
-        while (iterator.hasNext()) {
-            assertEquals(expected[i++], iterator.next());
+        for (int i = 0; i < stringsTest.length; i++) {
+            assertEquals(list.get(i),stringsTest[i]);
         }
 
-        assertEquals(4, i);
-
-        assertThrows(IndexOutOfBoundsException.class, () -> {
-            iterator.next();
-        });
-    }*/
-
-  /*  @Test
-    public void testBackwardIterator_emptyList() {
-        Iterator<String> iterator = list.backwardIterator();
-
-        assertFalse(iterator.hasNext());
-        assertThrows(IndexOutOfBoundsException.class, () -> {
-            iterator.next();
-        });
     }
-
     @Test
-    public void testBackwardIterator_oneElement() {
-        String[] expected = {"Evgeny Borisovich"};
+    public void test_Sort_Integer() {
 
-        list.addLast("Evgeny Borisovich");
 
-        Iterator<String> iterator = list.backwardIterator();
+        listInteger.addLast(5);
+        listInteger.addLast(15);
+        listInteger.addLast(1);
+        listInteger.addLast(102);
+        listInteger.sort(new IntegerBasicComparator());
+        System.out.println(listInteger);
 
-        int i = 0;
-        while (iterator.hasNext()) {
-            assertEquals(expected[i++], iterator.next());
+        int[] arrtest={1,5,15,102};
+        for (int i = 0; i < arrtest.length; i++) {
+            assertEquals(listInteger.get(i),arrtest[i]);
         }
-        assertEquals(1, i);
-
-        assertThrows(IndexOutOfBoundsException.class, () -> {
-            iterator.next();
-        });
     }
 
-    @Test
-    public void testBackwardIterator_severalElements() {
-        String[] expected = {"Evgenievna", "Vladislava", "Borisovich", "Evgeny"};
-
-        OurList<String> strings = new OurArrayList<>();
-        strings.addLast("Evgeny");
-        strings.addLast("Borisovich");
-        strings.addLast("Vladislava");
-        strings.addLast("Evgenievna");
-
-        Iterator<String> iterator = strings.backwardIterator();
-
-        int i = 0;
-        while (iterator.hasNext()) {
-            assertEquals(expected[i++], iterator.next());
-        }
-
-        assertEquals(4, i);
-
-        assertThrows(IndexOutOfBoundsException.class, () -> {
-            iterator.next();
-        });
-    }
-*/
     public void createArrayList(int index) {
 
         String symbol = "symbol ";
