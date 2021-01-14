@@ -1,5 +1,6 @@
 package telran;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -38,7 +39,6 @@ public class OurHashMap<K, V> implements OurMap<K, V> {
         if (pair != null) {
             V res = pair.value;
             pair.value = value;
-            size++;
             return res;
         }
 
@@ -101,19 +101,23 @@ public class OurHashMap<K, V> implements OurMap<K, V> {
         int index = hash(key) % capacity;
         Pair<K, V> current = source[index];
 
-        while (current != null) {
-           // Pair<K, V> subsequentElement = pair.next;
-            if (current.next!=null && key.equals(current.next.key)) {
-                current.next = pair.next;
-                break;
+        //если удаляем первый лежащий снизу элемент
+        if (current == pair)
+            source[index] = current.next;
+        else {
+            while (current != null) {
+                // Pair<K, V> subsequentElement = pair.next;
+                if (current.next != null && key.equals(current.next.key)) {
+                    current.next = pair.next;
+                    break;
+                }
+                current = current.next;
             }
-            current = current.next;
         }
         size--;
         V value = pair.value;
         pair.value = null;
         pair.key = null;
-        //pair.next = null;
 
         return value;
     }
@@ -125,12 +129,13 @@ public class OurHashMap<K, V> implements OurMap<K, V> {
 
     @Override
     public Iterator<K> keyIterator() {
-        return null;
+        Iterator<K> iterator = new KeyIterator();
+        return iterator;
     }
 
     @Override
     public Iterator<V> valueIterator() {
-        return null;
+        return new ValueIterator();
     }
 
     static private class Pair<K, V> {
@@ -144,16 +149,62 @@ public class OurHashMap<K, V> implements OurMap<K, V> {
             this.next = next;
         }
 
-        //        public K getKey() {
-//            return key;
-//        }
-//
-//        public V getValue() {
-//            return value;
-//        }
-//
         public Pair<K, V> getNext() {
             return next;
+        }
+    }
+
+    private class KeyIterator implements Iterator<K> {
+        ArrayList<K> keySource;
+        int currentIndex = 0;
+
+        public KeyIterator() {
+            keySource=new ArrayList<K>();
+            for (int i = 0; i < source.length; i++) {
+                Pair<K, V> current = source[i];
+                while (current != null) {
+                    keySource.add(current.key);
+                    current = current.next;
+                }
+            }
+        }
+
+        @Override
+        public boolean hasNext() {
+            return currentIndex < size;
+        }
+
+        @Override
+        public K next() {
+            if (currentIndex >= size)
+                throw new IndexOutOfBoundsException();
+
+            K res = keySource.get(currentIndex);
+            currentIndex++;
+            return res;
+        }
+    }
+
+    private class ValueIterator implements Iterator<V> {
+        int currentIndex = 0;
+
+        @Override
+        public boolean hasNext() {
+            return currentIndex<size;
+        }
+
+        @Override
+        public V next() {
+
+           /* Pair<K, V> currentV = source[currentIndex];
+            while (currentV != null) {
+                int index = hash(currentV.key) % capacity;
+                keySource.add(currentV.key);
+                currentV = currentV.next;
+
+            }
+            currentIndex++;
+            return currentV.value;*/
         }
     }
 }
