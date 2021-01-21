@@ -3,6 +3,7 @@ package telran;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.TreeMap;
 
 public class Main {
     public static void main(String[] args) {
@@ -15,6 +16,7 @@ public class Main {
 
         String value=map.get(another);
         System.out.println(value);
+
     }
 
     static void filMap(OurHashMap<Auto, String> map) {

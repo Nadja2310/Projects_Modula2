@@ -5,15 +5,17 @@ import javafx.util.Pair;
 import java.util.Iterator;
 
 public interface OurMap<K,V> {
-    public V put(K key, V value);
+     V put(K key, V value);
 
-    public V get(K key);
+     V get(K key);
 
-    public V remove(K key);
+     V remove(K key);
 
-    public int size();
+     int size();
 
-    public Iterator<K> keyIterator();
+     boolean containsKey(K key);
 
-    public Iterator<V> valueIterator();
+    Iterator<K> keyIterator();
+
+    Iterator<V> valueIterator();
 }

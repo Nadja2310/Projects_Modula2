@@ -1,6 +1,5 @@
 package telran;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Iterator;
@@ -8,58 +7,10 @@ import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class OurHashMapTest extends OurMapTest{
+public abstract class OurMapTest {
+    OurMap<String,Auto> map;
+    OurMap<Integer,String> intMap;
 
-    @BeforeEach
-        public void init(){
-        map = new OurHashMap<>();
-        intMap=new OurHashMap<>();
-    }
-
-    @Test
-    void testPut_resize() {
-        map = new OurHashMap<>(0.5);
-        Auto opel = new Auto("grey", "Opel");
-        Auto mazda = new Auto("red", "Mazda");
-        Auto bmw = new Auto("black", "BMW");
-        Auto audi = new Auto("blue", "Audi");
-        Auto audi2 = new Auto("braun", "Audi");
-
-        map.put("WIN4528", opel);
-        map.put("WIN74528", opel);
-        map.put("WIN56828", mazda);
-        map.put("WIN56628", mazda);
-        map.put("WIN56298", mazda);
-        map.put("WIN8988", bmw);
-        map.put("WIN8989", bmw);
-        map.put("WIN5628", audi);
-        map.put("WIN56256", audi2);
-        assertEquals(map.get("WIN56256"), audi2);
-        assertEquals(map.size(), 9);
-    }
-
-
-   /* @Test
-    void testPut_resize() {
-        OurHashMap<String, Auto> map = new OurHashMap<>(0.5);
-        Auto opel = new Auto("grey", "Opel");
-        Auto mazda = new Auto("red", "Mazda");
-        Auto bmw = new Auto("black", "BMW");
-        Auto audi = new Auto("blue", "Audi");
-        Auto audi2 = new Auto("braun", "Audi");
-
-        map.put("WIN4528", opel);
-        map.put("WIN74528", opel);
-        map.put("WIN56828", mazda);
-        map.put("WIN56628", mazda);
-        map.put("WIN56298", mazda);
-        map.put("WIN8988", bmw);
-        map.put("WIN8989", bmw);
-        map.put("WIN5628", audi);
-        map.put("WIN56256", audi2);
-        assertEquals(map.get("WIN56256"), audi2);
-        assertEquals(map.size(), 9);
-    }
 
     @Test
     void changeTheValueOofAnExistingElement() {
@@ -72,6 +23,32 @@ class OurHashMapTest extends OurMapTest{
         assertEquals(map.get("WIN5628"), audi2);
         assertTrue(map.get("WIN5628") != audi);
         assertEquals(map.size(), 1);
+    }
+
+    @Test
+    void containsKey_EmptyMap() {
+
+        Auto audi = new Auto("blue", "Audi");
+        Auto audi2 = new Auto("braun", "Audi");
+
+        map.put("WIN5628", audi);
+        map.put("WIN5628", audi2);
+        assertEquals(map.get("WIN5628"), audi2);
+        assertTrue(map.get("WIN5628") != audi);
+        assertEquals(map.size(), 1);
+    }
+
+    @Test
+    void containsKey_ServerElement() {
+
+        Auto audi = new Auto("blue", "Audi");
+        Auto audi2 = new Auto("braun", "Audi");
+
+        map.put("WIN5628", audi);
+        map.put("WIN5628", audi2);
+        assertTrue(map.containsKey("WIN5628"));
+
+        assertFalse(map.containsKey("WIN5620"));
     }
 
     @Test
@@ -117,14 +94,14 @@ class OurHashMapTest extends OurMapTest{
         map.put("WIN56256", audi2);
 
         assertEquals(map.remove("WIN8988"), bmw);
-        assertThrows(NoSuchElementException.class, () -> map.get("WIN8988"));
+        assertNull(map.get("WIN8988"));
         assertEquals(map.size(), 8);
-        String[] autoWin={"WIN4528","WIN56828","WIN74528","WIN56628","WIN56298","WIN8989","WIN5628","WIN56256"};
-        checkAllElements(map,autoWin);
+        String[] autoWin = {"WIN4528", "WIN56828", "WIN74528", "WIN56628", "WIN56298", "WIN8989", "WIN5628", "WIN56256"};
+        checkAllElements(map, autoWin);
     }
     @Test
     void testRemove_twoObjectInCells_UpElement() {
-        OurHashMap<String, Auto> map = new OurHashMap<>();
+
         Auto opel = new Auto("grey", "Opel");
         Auto mazda = new Auto("red", "Mazda");
         Auto bmw = new Auto("black", "BMW");
@@ -140,9 +117,9 @@ class OurHashMapTest extends OurMapTest{
         map.put("WIN8989", bmw);
         map.put("WIN5628", audi);
         map.put("WIN56256", audi2);
-        assertEquals(map.remove("WIN74528"), opel);
-        assertEquals(map.get("WIN8989"), bmw);
-        assertEquals(map.size(), 8);
+        assertEquals(opel,map.remove("WIN74528"));
+//        assertEquals(map.get("WIN74528"), bmw);
+        assertEquals(8,map.size());
 
         String[] autoWin={"WIN4528","WIN56828","WIN56628","WIN56298","WIN8988","WIN8989","WIN5628","WIN56256"};
         checkAllElements(map,autoWin);
@@ -180,16 +157,16 @@ class OurHashMapTest extends OurMapTest{
         checkAllElements(map,autoWin);
     }
 
-    void checkAllElements(OurHashMap<String, Auto> mapCheck,String[] arrayStr){
+    void checkAllElements(OurMap<String, Auto> mapCheck,String[] arrayStr){
         for (String elm:arrayStr) {
-           // System.out.println(elm);
+            // System.out.println(elm);
             assertTrue(mapCheck.get(elm)!=null);
         }
     }
 
     @Test
     public void testKeyIterator_emptyList() {
-         Iterator<String> iterator = map.keyIterator();
+        Iterator<String> iterator = map.keyIterator();
 
         assertFalse(iterator.hasNext());
         assertThrows(IndexOutOfBoundsException.class, () -> {
@@ -248,5 +225,102 @@ class OurHashMapTest extends OurMapTest{
         assertThrows(IndexOutOfBoundsException.class, () -> {
             iterator.next();
         });
-    }*/
+    }
+
+    @Test
+    public void test_keyIterator() {
+        for (int i = 0; i < 5; i++) {
+            intMap.put(i, "aaa");
+            intMap.put(i * 2, "bbb");
+        }
+        Iterator<Integer> iterator = intMap.keyIterator();
+        int[] exp = {0, 1, 2, 3, 4, 6, 8};
+        int i = 0;
+        while (iterator.hasNext()) {
+            iterator.next();
+            i++;
+//            assertEquals(exp[i++], iterator.next());
+        }
+
+        assertEquals(7, i);
+    }
+
+    @Test
+    public void testSizePut_emptyObject_newElements() {
+        intMap.put(3, "f");
+        intMap.put(2, "b");
+        intMap.put(1, "c");
+        assertEquals(3, intMap.size());
+    }
+
+    @Test
+    public void testSizePut_emptyObject_noElements() {
+        assertEquals(0, intMap.size());
+    }
+
+    @Test
+    public void testSizePut_NotEmptyObject_notExistKey() {
+        intMap.put(1, "a");
+        intMap.put(2, "b");
+        intMap.put(3, "c");
+        assertEquals(3, intMap.size());
+        intMap.put(4, "d");
+        assertEquals(4, intMap.size());
+    }
+
+    @Test
+    public void testSizePut_NotEmptyObject_existKey() {
+        intMap.put(1, "a");
+        intMap.put(2, "b");
+        intMap.put(3, "c");
+        assertEquals(3, intMap.size());
+        intMap.put(2, "d");
+        assertEquals(3, intMap.size());
+    }
+
+    @Test
+    public void testGetContains_NotEmptyObject_existKey() {
+        intMap.put(1, "a");
+        intMap.put(2, "b");
+        intMap.put(3, "c");
+        assertEquals("b", intMap.get(2));
+        assertEquals("a", intMap.get(1));
+        assertEquals("c", intMap.get(3));
+    }
+
+    @Test
+    public void testGetContains_NotEmptyObject_notExistKey() {
+        intMap.put(1, "a");
+        intMap.put(2, "b");
+        intMap.put(3, "c");
+        assertNull(intMap.get(5));
+    }
+
+    @Test
+    public void testGetContains_emptyObject_notExistKey() {
+        assertNull(intMap.remove(5));
+    }
+
+    @Test
+    public void testRemove_NotEmptyObject_existKey() {
+        intMap.put(1, "a");
+        intMap.put(2, "b");
+        intMap.put(3, "c");
+        assertEquals(3, intMap.size());
+        intMap.remove(2);
+        assertEquals(2, intMap.size());
+        assertNull(intMap.get(2));
+    }
+
+    @Test
+    public void testRemove_NotEmptyObject_notExistKey() {
+        intMap.put(1, "a");
+        intMap.put(2, "b");
+        intMap.put(3, "c");
+        assertEquals(3, intMap.size());
+        assertNull(intMap.remove(5));
+        assertEquals(3, intMap.size());
+        assertNull(intMap.get(5));
+    }
+
 }

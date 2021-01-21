@@ -60,6 +60,7 @@ public class OurHashMap<K, V> implements OurMap<K, V> {
 
             while (current != null) {
                 int index = hash(current.key) % capacity;
+                //можно не создавать пару а перекинуть ссылки через темп переменную
                 Pair<K, V> newPair = new Pair<>(current.key, current.value, newSource[index]);
                 newSource[index] = newPair;
                 current = current.next;
@@ -85,46 +86,59 @@ public class OurHashMap<K, V> implements OurMap<K, V> {
 
     @Override
     public V get(K key) {
-        if (find(key) == null)
-            throw new NoSuchElementException();
-
-        return find(key).value;
+        Pair<K, V> pair = find(key);
+        return pair == null ? null : pair.value;
     }
 
     @Override
     public V remove(K key) {
-
-        if (find(key) == null)
-            throw new NoSuchElementException();
-
-        Pair<K, V> pair = find(key);
         int index = hash(key) % capacity;
         Pair<K, V> current = source[index];
 
-        //если удаляем первый лежащий снизу элемент
-        if (current == pair)
+        if (current == null)
+            return null;
+
+        if (current.key.equals(key)) {
             source[index] = current.next;
-        else {
-            while (current != null) {
-                // Pair<K, V> subsequentElement = pair.next;
-                if (current.next != null && key.equals(current.next.key)) {
-                    current.next = pair.next;
-                    break;
-                }
-                current = current.next;
-            }
+            V res = current.value;
+
+            clearPair(current);
+
+            size--;
+            return res;
         }
-        size--;
-        V value = pair.value;
+
+        while (current.next != null) {
+            if (current.next.key.equals(key)) {
+                Pair<K, V> pairToRemove = current.next;
+                V res = pairToRemove.value;
+                current.next = pairToRemove.next;
+
+                clearPair(pairToRemove);
+
+                size--;
+                return res;
+            }
+            current = current.next;
+        }
+
+        return null;
+    }
+
+    private void clearPair(Pair<K, V> pair) {
+        pair.next = null;
         pair.value = null;
         pair.key = null;
-
-        return value;
     }
 
     @Override
     public int size() {
         return size;
+    }
+
+    @Override
+    public boolean containsKey(K key) {
+        return (find(key)!=null);
     }
 
     @Override
@@ -159,7 +173,7 @@ public class OurHashMap<K, V> implements OurMap<K, V> {
         int currentIndex = 0;
 
         public KeyIterator() {
-            keySource=new ArrayList<K>();
+            keySource = new ArrayList<K>();
             for (int i = 0; i < source.length; i++) {
                 Pair<K, V> current = source[i];
                 while (current != null) {
@@ -190,12 +204,12 @@ public class OurHashMap<K, V> implements OurMap<K, V> {
 
         @Override
         public boolean hasNext() {
-            return currentIndex<size;
+            return currentIndex < size;
         }
 
         @Override
         public V next() {
-
+            return null;
            /* Pair<K, V> currentV = source[currentIndex];
             while (currentV != null) {
                 int index = hash(currentV.key) % capacity;
