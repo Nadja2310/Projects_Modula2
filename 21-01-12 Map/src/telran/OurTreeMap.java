@@ -122,51 +122,61 @@ public class OurTreeMap<K, V> implements OurMap<K, V> {
     private V linearRemove(Node<K, V> nodeToRemove) {
         V oldValue = nodeToRemove.value;
 
-        if (nodeToRemove.left != null) {
+        Node<K, V> child = nodeToRemove.left == null ? nodeToRemove.right : nodeToRemove.left;
+        Node<K, V> parent = nodeToRemove.parent;
 
-            nodeToRemove.key = nodeToRemove.left.key;
-            nodeToRemove.value = nodeToRemove.left.value;
-            nodeToRemove.left.parent=null;
-            return oldValue;
-        } else if (nodeToRemove.right != null) {
-            nodeToRemove.key = nodeToRemove.right.key;
-            nodeToRemove.value = nodeToRemove.right.value;
-            nodeToRemove.right.parent=null;
+        if (parent == null) {//root
+            root = child;
+            clearNode(nodeToRemove);
+        } else if (parent.left == nodeToRemove) {
+            parent.left = child;
+        } else
+            parent.right = child;
 
+        if (child != null) {
+            child.parent = parent;
         }
-        if (nodeToRemove.parent == null)//root
-            root = new Node<>(nodeToRemove.key, nodeToRemove.value, null);
-
         return oldValue;
     }
 
+
+    /*    if (nodeToRemove.parent == null)//root
+            root = new Node<>(nodeToRemove.key, nodeToRemove.value, null);
+*/
+
+    private void clearNode(Node<K, V> nodeToRemove) {
+        nodeToRemove.key = null;
+        nodeToRemove.value = null;
+        nodeToRemove.left = null;
+        nodeToRemove.right = null;
+        nodeToRemove.parent = null;
+    }
+
     private V junctionRemove(Node<K, V> nodeToRemove) {
-        Node<K, V> nextNode = findNext(nodeToRemove);
+        Node<K, V> nextNode = findNextInRightBranch(nodeToRemove);
 
         V oldValue = nodeToRemove.value;
         nodeToRemove.key = nextNode.key;
         nodeToRemove.value = nextNode.value;
 
         linearRemove(nextNode);
-
         return oldValue;
     }
 
-    private Node<K, V> findNext(Node<K, V> nodeToRemove) {
-        Node<K,V> current=nodeToRemove.right;
+    private Node<K, V> findNextInRightBranch(Node<K, V> node) {
+        Node<K, V> current = node.right;
 
-        while (current.left!= null) {
-
-  /*          int compared = keyComparator.compare(key, current.key);
-
-            if (compared > 0)
-                current = current.right;
-            else if (compared < 0)*/
-                current = current.left;
-
-        }
+        while (current.left != null)
+            current = current.left;
 
         return current;
+    }
+
+    private Node<K, V> findNextRightParent(Node<K, V> current) {
+        while (current.parent != null && current.parent.left != current) {
+            current = current.parent;
+        }
+        return current.parent;
     }
 
     @Override
@@ -179,13 +189,67 @@ public class OurTreeMap<K, V> implements OurMap<K, V> {
         return (findNode(key) != null);
     }
 
+    private Node<K, V> findMinNode() {
+        Node<K, V> current = root;
+
+        while (current.left != null) {
+            current = current.left;
+        }
+        return current;
+    }
+
     @Override
     public Iterator<K> keyIterator() {
-        return null;
+        return new KeyIterator();
     }
 
     @Override
     public Iterator<V> valueIterator() {
-        return null;
+        return new Iterator<V>() {
+
+            final KeyIterator keyIterator = new KeyIterator();
+
+            @Override
+            public boolean hasNext() {
+                return keyIterator.hasNext();
+            }
+
+            @Override
+            public V next() {
+                return get(keyIterator.next());
+            }
+        };
+    }
+
+    private class KeyIterator implements Iterator<K> {
+
+        Node<K, V> current;
+        int currentElementNumber;
+
+        public KeyIterator() {
+            if (size > 0)
+                current = findMinNode();
+        }
+
+        @Override
+        public boolean hasNext() {
+            return currentElementNumber < size;
+        }
+
+        @Override
+        public K next() {
+            if (currentElementNumber == size)
+                throw new IndexOutOfBoundsException();
+
+            K res = current.key;
+
+            if (current.right != null)
+                current = findNextInRightBranch(current);
+            else
+                current = findNextRightParent(current);
+
+            currentElementNumber++;
+            return res;
+        }
     }
 }

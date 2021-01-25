@@ -3,6 +3,11 @@ package telran;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class OurTreeMapTest extends OurMapTest{
@@ -36,5 +41,104 @@ class OurTreeMapTest extends OurMapTest{
 
         String[] autoWin={"WIN4528","WIN56828","WIN56628","WIN56298","WIN8988","WIN8989","WIN5628","WIN56256"};
         checkAllElements(map,autoWin);
+    }
+    @Test
+    public void testRemoveAdd_severalElements_removeRoot() {
+        intMap.put(1, "a");
+        intMap.put(2, "b");
+        assertEquals(2, intMap.size());
+        assertEquals("a", intMap.remove(1));
+        assertEquals(1, intMap.size());
+        assertEquals("b", intMap.get(2));
+    }
+
+    @Test
+    public void testRemoveAdd_severalElements_removeRight() {
+        intMap.put(1, "a");
+        intMap.put(2, "b");
+        assertEquals(2, intMap.size());
+        assertEquals("b", intMap.remove(2));
+        assertEquals(1, intMap.size());
+        assertEquals("a", intMap.get(1));
+    }
+
+    @Test
+    public void testKeyIterator_severalElements_increasing() {
+        intMap.put(1, "a");
+        intMap.put(-10, "b");
+        intMap.put(5, "b");
+        intMap.put(3, "b");
+        intMap.put(-5, "b");
+        intMap.put(2, "b");
+
+        List<Integer> expected = Arrays.asList(-10, -5, 1, 2, 3, 5);
+
+        List<Integer> actual = new ArrayList<>();
+
+        Iterator<Integer> keyIterator = intMap.keyIterator();
+        while (keyIterator.hasNext())
+            actual.add(keyIterator.next());
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testKeyIterator_severalElements_rootToTheLeft() {
+        intMap.put(-10, "b");
+        intMap.put(-5, "b");
+        intMap.put(1, "a");
+        intMap.put(2, "b");
+        intMap.put(3, "b");
+        intMap.put(5, "b");
+
+        List<Integer> expected = Arrays.asList(-10, -5, 1, 2, 3, 5);
+
+        List<Integer> actual = new ArrayList<>();
+
+        Iterator<Integer> keyIterator = intMap.keyIterator();
+        while (keyIterator.hasNext())
+            actual.add(keyIterator.next());
+
+        assertEquals(expected, actual);
+    }
+
+    //TODO implement and write tests for value iterator
+    @Test
+    public void testValueIterator_severalElements_rootToTheLeft() {
+        intMap.put(-10, "-10");
+        intMap.put(-5, "-5");
+        intMap.put(1, "1");
+        intMap.put(2, "2");
+        intMap.put(3, "3");
+        intMap.put(5, "5");
+
+        List<String> expected = Arrays.asList("-10", "-5", "1","2","3","5");
+
+        List<String> actual = new ArrayList<>();
+
+        Iterator<String> valueIterator = intMap.valueIterator();
+        while (valueIterator.hasNext())
+            actual.add(valueIterator.next());
+
+        assertEquals(expected, actual);
+    }
+    @Test
+    public void testValueIterator_severalElements_increasing() {
+        intMap.put(1, "1");
+        intMap.put(-10, "-10");
+        intMap.put(5, "5");
+        intMap.put(3, "3");
+        intMap.put(-5, "-5");
+        intMap.put(2, "2");
+
+        List<String> expected = Arrays.asList("-10", "-5", "1", "2", "3", "5");
+
+        List<String> actual = new ArrayList<>();
+
+        Iterator<String> valueIterator = intMap.valueIterator();
+        while (valueIterator.hasNext())
+            actual.add(valueIterator.next());
+
+        assertEquals(expected, actual);
     }
 }

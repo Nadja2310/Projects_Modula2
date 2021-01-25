@@ -149,7 +149,20 @@ public class OurHashMap<K, V> implements OurMap<K, V> {
 
     @Override
     public Iterator<V> valueIterator() {
-        return new ValueIterator();
+        return new Iterator<V>() {
+
+            final KeyIterator keyIterator = new KeyIterator();
+
+            @Override
+            public boolean hasNext() {
+                return keyIterator.hasNext();
+            }
+
+            @Override
+            public V next() {
+                return get(keyIterator.next());
+            }
+        };
     }
 
     static private class Pair<K, V> {
@@ -196,29 +209,6 @@ public class OurHashMap<K, V> implements OurMap<K, V> {
             K res = keySource.get(currentIndex);
             currentIndex++;
             return res;
-        }
-    }
-
-    private class ValueIterator implements Iterator<V> {
-        int currentIndex = 0;
-
-        @Override
-        public boolean hasNext() {
-            return currentIndex < size;
-        }
-
-        @Override
-        public V next() {
-            return null;
-           /* Pair<K, V> currentV = source[currentIndex];
-            while (currentV != null) {
-                int index = hash(currentV.key) % capacity;
-                keySource.add(currentV.key);
-                currentV = currentV.next;
-
-            }
-            currentIndex++;
-            return currentV.value;*/
         }
     }
 }
