@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class AutoMapTest {
    List<Auto> listAuto=new ArrayList<>();
 
-
     @Test
    void test(){
         List<Auto> listAuto=new ArrayList<>();
@@ -49,9 +48,15 @@ class AutoMapTest {
         }*/
 
         for (Map.Entry<String, List<Auto>> element : autoMap.entrySet()) {
-            System.out.println(element.getKey());
-            System.out.println(element.getValue());
+            String elmAutoKey=element.getKey();
+            List<Auto> elmAuto=element.getValue();
 
+            System.out.println(elmAutoKey);
+            System.out.println(elmAuto);
+
+            for (Auto elmColor:elmAuto) {
+                assertEquals(elmAutoKey,elmColor.getMake());
+            }
         }
         assertEquals(4,autoMap.size());
     }
