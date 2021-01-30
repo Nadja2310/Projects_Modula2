@@ -6,13 +6,13 @@ import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ArrayIntTest {
-    ArrayInt arr=new ArrayInt();
+class DuplicateElementsTest {
+    DuplicateElements arr=new DuplicateElements();
     @Test
-    void searchFrequentElement_Value1() {
+    void searchElement_Value1() {
 
         int[] array=new int[]{8,7,2,3,4};
-        HashMap<Integer,Integer> x=arr.searchFrequentElement(array);
+        HashMap<Integer,Integer> x=arr.searchElement(array);
         assertTrue(x.containsKey(8));
         assertTrue(x.containsKey(7));
         assertTrue(x.containsKey(2));
@@ -27,10 +27,10 @@ class ArrayIntTest {
     }
 
     @Test
-    void searchFrequentElement_differentValue() {
+    void searchElement_differentValue() {
 
         int[] array=new int[]{8,7,2,8,7,3,3,4,4,8,4,3,4};
-        HashMap<Integer,Integer> x=arr.searchFrequentElement(array);
+        HashMap<Integer,Integer> x=arr.searchElement(array);
         assertTrue(x.containsKey(8));
         assertTrue(x.containsKey(7));
         assertTrue(x.containsKey(2));

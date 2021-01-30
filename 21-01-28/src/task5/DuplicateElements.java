@@ -3,9 +3,9 @@ package task5;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ArrayInt {
+public class DuplicateElements {
 
-    public HashMap<Integer, Integer> searchFrequentElement(int[] array) {
+    public HashMap<Integer, Integer> searchElement(int[] array) {
 
         HashMap<Integer, Integer> occurenceByNumber = new HashMap<>();
         for (int element : array) {
