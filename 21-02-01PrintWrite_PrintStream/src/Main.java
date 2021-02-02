@@ -91,9 +91,9 @@ public class Main {
 
 
         IPrintTester tester=new IPrintTester((iPrintStream));
-        tester.test(100000,list,filename1);
+        tester.test(list,filename1);
 
         IPrintTester tester1=new IPrintTester(new IPrintWrite());
-        tester.test(100000,list,filename2);
+        tester.test(list,filename2);
     }
 }
