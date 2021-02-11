@@ -21,22 +21,20 @@ public class Main {
         Thread supplierThread = new Thread(new Supplier(bufferedReader, queue));
         supplierThread.start();
 
-
         OperationContext context = new OperationContext();
 
         Thread consumerThread1 = new Thread(new Consumer(queue, printWriter, context));
         Thread consumerThread2 = new Thread(new Consumer(queue, printWriter, context));
         Thread consumerThread3 = new Thread(new Consumer(queue, printWriter, context));
-        consumerThread1.setDaemon(true);
-        consumerThread2.setDaemon(true);
-        consumerThread3.setDaemon(true);
         consumerThread1.start();
         consumerThread2.start();
         consumerThread3.start();
+        supplierThread.join();
 
         consumerThread1.join();
         consumerThread2.join();
         consumerThread3.join();
         System.out.println("end");
+        printWriter.close();
     }
 }

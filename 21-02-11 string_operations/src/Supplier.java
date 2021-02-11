@@ -14,17 +14,14 @@ public class Supplier implements Runnable {
     @Override
     public void run() {
         //TODO read lines and pass every line to the queue via method put
-
-        while (true) {
-            try {
-                String line;
-                if ((line = br.readLine()) != null) {
-                    queue.put(line);
-                    System.out.println("queue "+line);
-                }
-            } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
+        try {
+            String line;
+            while ((line = br.readLine()) != null) {
+                queue.put(line);
+                System.out.println("queue " + line);
             }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }

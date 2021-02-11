@@ -16,7 +16,8 @@ public class Consumer implements Runnable {
 
     @Override
     public void run() {
-        for (String line : queue) {
+        String line;
+        while((line=queue.poll())!=null) {
             String res = handleRawString(line);
             writer.println(res);
         }
@@ -33,7 +34,7 @@ public class Consumer implements Runnable {
         //TODO postfix ''. E.g. "hello world#opper_case" -> "hello world#opper_case#wrong operation"
         int sizeStr = line.indexOf("#");
 
-        if (sizeStr == -1 || line.lastIndexOf("#") != sizeStr)//indexOf("#",sizeStr+1)>0)
+        if (sizeStr == -1 || line.lastIndexOf("#") != sizeStr)
             return line + "#wrong format";
         String nameOperation = line.substring(sizeStr + 1, line.length());
 
