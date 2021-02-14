@@ -1,27 +1,31 @@
 import Operation.OperationContext;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class Main {
-    public static void main(String[] args) throws FileNotFoundException, InterruptedException {
 
-        // TODO. Introduce here the following objects: BufferedReader (read from file),
-        //  PrintWriter (write to file),
-        // TODO LinkedBlockingQueue (to pass between supplier and consumer), OperationContext,
-        //  3 Consumers and 1 Supplier.
-        // TODO And run the threads.
-        String filename = "input.txt";
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(filename));
-        PrintWriter printWriter = new PrintWriter(new FileOutputStream("output.txt"));
+
+//video 12-02
+public class Main {
+
+    private static final String INPUT = "input.txt";
+    private static final String OUTPUT = "output.txt";
+    private static final String CONFIG = "config.props";
+
+    public static void main(String[] args) throws IOException, InterruptedException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(INPUT));
+        PrintWriter printWriter = new PrintWriter(new FileOutputStream(OUTPUT));
         BlockingQueue<String> queue = new LinkedBlockingQueue<>();
+        ConfigReader configReader=new ConfigReader(CONFIG);
         Thread supplierThread = new Thread(new Supplier(bufferedReader, queue));
         supplierThread.start();
 
-        OperationContext context = new OperationContext();
+        OperationContext context = new OperationContext(configReader.getOperationPaths());
 
         Thread consumerThread1 = new Thread(new Consumer(queue, printWriter, context));
         Thread consumerThread2 = new Thread(new Consumer(queue, printWriter, context));
@@ -29,12 +33,13 @@ public class Main {
         consumerThread1.start();
         consumerThread2.start();
         consumerThread3.start();
-        supplierThread.join();
 
         consumerThread1.join();
         consumerThread2.join();
         consumerThread3.join();
-        System.out.println("end");
+
+   //     supplierThread.join();
+
         printWriter.close();
     }
 }

@@ -1,9 +1,15 @@
+import Operation.IStringOperation;
 import Operation.OperationContext;
 
 import java.io.PrintWriter;
 import java.util.concurrent.BlockingQueue;
 
 public class Consumer implements Runnable {
+
+    private static final String SEPARATOR = "#";
+    private static final String WRONG_FORMAT = "wrong format";
+    private static final String WRONG_OPERATION = "wrong operation";
+
     private final BlockingQueue<String> queue;
     private final PrintWriter writer;
     private final OperationContext context;
@@ -16,14 +22,24 @@ public class Consumer implements Runnable {
 
     @Override
     public void run() {
-        String line;
-        while((line=queue.poll())!=null) {
-            String res = handleRawString(line);
-            writer.println(res);
+
+        try {
+            while (true) {
+               // System.out.println(queue.size());
+                String line = queue.take();
+                if (line.equals("exit"))
+                    return ;
+
+                String resLine = handleRawString(line);
+                writer.println(resLine);
+                writer.flush();
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
-    String handleRawString(String line) {
+    protected String handleRawString(String line) {
         //TODO complete
         //TODO if the line is of a wrong format then return it with the postfix '#wrong format' back. 'hello world'-> 'hello world#wrong format'
         //TODO or 'hello world#upper_case#param'-> 'hello world#upper_case#param#wrong format'
@@ -32,16 +48,20 @@ public class Consumer implements Runnable {
 
         //TODO if the format seems to be correct, but the operation is not found then write to the file the line with the
         //TODO postfix ''. E.g. "hello world#opper_case" -> "hello world#opper_case#wrong operation"
-        int sizeStr = line.indexOf("#");
+        String[] result = line.split(SEPARATOR);
 
-        if (sizeStr == -1 || line.lastIndexOf("#") != sizeStr)
-            return line + "#wrong format";
-        String nameOperation = line.substring(sizeStr + 1, line.length());
+        if (result.length != 2)
+            return line + SEPARATOR + WRONG_FORMAT;
 
-        if (context.getOperation(nameOperation) != null) {
-            String str = line.substring(0,sizeStr);
-            return context.getOperation(nameOperation).operate(str);
-        } else
-            return line + "#wrong operation";
+        String stringToPerform = result[0];
+        String operationName = result[1];
+
+        IStringOperation stringOperation = context.getOperation(operationName);
+
+        if (stringOperation == null)
+            return line + SEPARATOR + WRONG_OPERATION;
+
+        return stringOperation.operate(stringToPerform);
     }
 }
+

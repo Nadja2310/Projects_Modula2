@@ -13,15 +13,21 @@ public class Supplier implements Runnable {
 
     @Override
     public void run() {
-        //TODO read lines and pass every line to the queue via method put
-        try {
+          try {
             String line;
             while ((line = br.readLine()) != null) {
                 queue.put(line);
-                System.out.println("queue " + line);
+               // System.out.println("queue " + line);
+                exit();
             }
+
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
+    }
+    private void exit() throws InterruptedException {
+        queue.put("exit");
+        queue.put("exit");
+        queue.put("exit");
     }
 }
