@@ -2,10 +2,10 @@ import java.time.LocalDate;
 import java.util.Date;
 
 public class Transaction {
-   private String uuid;
-   private long sum;
-   private LocalDate date;
-   private State state;
+    private String uuid;
+    private long sum;
+    private LocalDate date;
+    private State state;
 
     public Transaction(String uuid, long sum, LocalDate date, State state) {
         this.uuid = uuid;
