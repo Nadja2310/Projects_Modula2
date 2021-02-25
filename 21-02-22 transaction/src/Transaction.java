@@ -14,12 +14,12 @@ public class Transaction {
         this.state = state;
     }
 
-    public String getUuid() {
-        return uuid;
+    public void setState(State state) {
+        this.state = state;
     }
 
-    public long getSum() {
-        return sum;
+    public String getUuid() {
+        return uuid;
     }
 
     public LocalDate getDate() {
@@ -28,5 +28,9 @@ public class Transaction {
 
     public State getState() {
         return state;
+    }
+
+    public long getSum() {
+        return sum;
     }
 }

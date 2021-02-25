@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
@@ -5,15 +7,12 @@ import java.util.stream.LongStream;
 public class Account {
     private String id;
     private long balance;
-    List<Transaction> transaction;
+    List<Transaction> transactions;
 
-    public Account() {
-    }
-
-    public Account(String id, long balance, List<Transaction> transaction) {
+    public Account(String id, long balance) {
         this.id = id;
         this.balance = balance;
-        this.transaction = transaction;
+        this.transactions = new ArrayList<>();
     }
 
     public String getId() {
@@ -25,17 +24,10 @@ public class Account {
     }
 
     public List<Transaction> getTransaction() {
-        return transaction;
+        return Collections.unmodifiableList(transactions);
     }
 
-    public long count(List<Account> accounts) {
-        long longStream = accounts.stream()
-                .filter(x -> x.balance > 0)
-                .flatMap(x -> x.getTransaction().stream())
-                .filter(x -> x.getState() == State.CANCELLED)
-                .mapToLong(x -> x.getSum())
-                .sum();
-
-        return longStream;
+    public void addTransaction(Transaction transaction) {
+        transactions.add(transaction);
     }
 }
