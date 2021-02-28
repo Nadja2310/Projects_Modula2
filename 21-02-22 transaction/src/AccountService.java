@@ -5,14 +5,12 @@ import java.util.stream.Collectors;
 public class AccountService {
     public long getSumAllCancelledTransaction(List<Account> accounts) {
 
-        long longStream = accounts.stream()
+        return accounts.stream()
                 .filter(account -> account.getBalance() > 0)
                 .flatMap(account -> account.getTransaction().stream())
                 .filter(transaction -> transaction.getState() == State.CANCELLED)
                 .mapToLong(Transaction::getSum)
                 .sum();
-
-        return longStream;
     }
 
     public Map<String, Long> sumTransaction(List<Transaction> transactions) {
