@@ -29,10 +29,10 @@ class ServiceLogEntryTest {
         LogEntry user2_1 = new LogEntry("user2", "url2");
         LogEntry user3 = new LogEntry("user3", "url2");
         LogEntry user4 = new LogEntry("user4", "url3");
-        Map<String, Map<String, Long>> res = serviceLogEntry.numberOfUniqueUsers(
+        Map<String, Integer> res = serviceLogEntry.numberOfUniqueUsers(
                 Arrays.asList(user1, user2, user1_2, user3, user1_url2, user4, user2_1));
-        assertEquals(1, res.get("url1").size());
-        assertEquals(3, res.get("url2").size());
-        assertEquals(1, res.get("url3").size());
+        assertEquals(1, res.get("url1"));
+        assertEquals(3, res.get("url2"));
+        assertEquals(1, res.get("url3"));
     }
 }
