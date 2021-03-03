@@ -9,16 +9,16 @@ import java.util.function.Supplier;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-public class Collector1 implements Collector<Integer, List<Integer>, List<Double>> {
+public class NormalizingCollector implements Collector<Integer, List<Integer>, List<Double>> {
 
     @Override
     public Supplier<List<Integer>> supplier() {
-        return () -> new ArrayList<>();
+        return ArrayList::new;
     }
 
     @Override
     public BiConsumer<List<Integer>, Integer> accumulator() {
-        return (temporaryList, number) -> temporaryList.add(number);
+        return List::add;
     }
 
     @Override
