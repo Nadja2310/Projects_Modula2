@@ -1,6 +1,5 @@
-import java.io.ByteArrayInputStream;
+import model.ServerInfo;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
@@ -31,8 +30,10 @@ public class BalancerGatewayUdp implements Runnable {
                 try {
                     serverUdpSocket.receive(packetIn);
                     String line = new String(dataIn, 0, packetIn.getLength());
-                    Map<String, Integer> updates = getPortServer(line);
-                    serverSource.updateOptimalServers(updates);
+                    ServerInfo serverInfo = getPortServer(line);
+                    if (serverInfo != null) {
+                        serverSource.updateOptimalServer(serverInfo);
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -40,19 +41,18 @@ public class BalancerGatewayUdp implements Runnable {
         } catch (SocketException e) {
             e.printStackTrace();
         }
-
     }
 
-    private Map<String, Integer> getPortServer(String packet) {
+    private ServerInfo getPortServer(String packet) {
         Map<String, Integer> optimalServers = new HashMap<>();
-        String[] portServerArray = packet.split(",");
+        String[] portServerArray = packet.split(":");
         if (portServerArray != null) {
             String server = portServerArray[0];
             int port = Integer.parseInt(portServerArray[1]);
-            optimalServers.put(server, port);
+            ServerInfo serverInfo = new ServerInfo(server, port);
             System.out.println("Balancer " + server + " port " + port);
+            return serverInfo;
         }
-        return optimalServers;
+        return null;
     }
-
 }
