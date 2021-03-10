@@ -24,22 +24,23 @@ public class BalancerGatewayUdp implements Runnable {
         DatagramSocket serverUdpSocket = null;
         try {
             serverUdpSocket = new DatagramSocket(udpPort);
+            byte[] dataIn = new byte[PACKET_SIZE];
+            DatagramPacket packetIn = new DatagramPacket(dataIn, PACKET_SIZE);
+
+            while (true) {
+                try {
+                    serverUdpSocket.receive(packetIn);
+                    String line = new String(dataIn, 0, packetIn.getLength());
+                    Map<String, Integer> updates = getPortServer(line);
+                    serverSource.updateOptimalServers(updates);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         } catch (SocketException e) {
             e.printStackTrace();
         }
-        byte[] dataIn = new byte[PACKET_SIZE];
-        DatagramPacket packetIn = new DatagramPacket(dataIn, PACKET_SIZE);
 
-        while (true) {
-            try {
-                serverUdpSocket.receive(packetIn);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            String line = new String(dataIn, 0, packetIn.getLength());
-            Map<String, Integer> updates = getPortServer(line);
-            serverSource.updateOptimalServers(updates);
-        }
     }
 
     private Map<String, Integer> getPortServer(String packet) {
