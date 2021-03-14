@@ -1,10 +1,10 @@
 import model.ServerInfo;
+import model.ServerSource;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class BalancerGatewayUdp implements Runnable {
 
@@ -44,7 +44,7 @@ public class BalancerGatewayUdp implements Runnable {
     }
 
     private ServerInfo getPortServer(String packet) {
-        Map<String, Integer> optimalServers = new HashMap<>();
+
         String[] portServerArray = packet.split(":");
         if (portServerArray != null) {
             String server = portServerArray[0];

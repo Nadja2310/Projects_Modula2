@@ -1,25 +1,26 @@
-import java.io.BufferedReader;
+import model.ServerSource;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
-import java.net.ServerSocket;
-import java.net.Socket;
 
 public class Main {
-    static int TCP_PORT = 3001;
+    static int BALANCER_PORT = 3001;
     static int GATEWAY_PORT = 3000;
+    private static final String DEFAULT_PROPS_PATH = "config/application.props";
+    private static final String TCP_OUTER_PORT_KEY = "tcp.outer.port";
+    private static final String UDP_FROM_BALANCER_PORT_KEY = "udp.balancer.port";
+
 
     public static void main(String[] args) throws IOException {
+        String propsPath = args.length > 0 ? args[0] : DEFAULT_PROPS_PATH;
+        ApplicationProperties properties = new ApplicationProperties(propsPath);
+
+        int tcpOuterPort = Integer.parseInt(properties.getProperty(TCP_OUTER_PORT_KEY));
+        int udpFromBalancerPort = Integer.parseInt(properties.getProperty(UDP_FROM_BALANCER_PORT_KEY));
+
         ServerSource serverSource = new ServerSource();
-        //client-gateway
         ClientGatewayTcp clientGatewayTcp = new ClientGatewayTcp(serverSource, GATEWAY_PORT, 3);
-        //установить соединение с балансером и он даст свободный Server
-        BalancerGatewayUdp balancer = new BalancerGatewayUdp(serverSource, TCP_PORT);
-
-        //установить соединение с полученным портом
-        //отправить сообщение на полученный порт
-        //ждать ответа от любого сервера с сообщением
-        //отправляю сообщение обратно клиенту
-
+        BalancerGatewayUdp fromBalancer = new BalancerGatewayUdp(serverSource, BALANCER_PORT);
+        new Thread(clientGatewayTcp);
+        new Thread(fromBalancer);
     }
 }

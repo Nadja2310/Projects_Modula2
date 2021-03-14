@@ -1,19 +1,17 @@
-import model.ServerInfo;
+package model;
 
-import java.util.Map;
+import model.ServerInfo;
 
 public class ServerSource {
 
     ServerInfo optimalServer;
 
-//       serv1.put("Server1", 3000);
-//       serv2.put("Server2", 4200);
-//       serv3.put("Server3", 8080);
     public synchronized ServerInfo getOptimalServer() {
         return optimalServer;
     }
 
     public synchronized void updateOptimalServer(ServerInfo updates) {
+
         optimalServer = updates;
     }
 }
