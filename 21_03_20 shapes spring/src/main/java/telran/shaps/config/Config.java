@@ -11,6 +11,8 @@ import telran.shaps.entity.Rectangle;
 import telran.shaps.entity.Shape;
 import telran.shaps.service.Picture;
 
+import java.util.List;
+
 @Configuration
 public class Config {
 
@@ -53,13 +55,27 @@ public class Config {
         return new Rectangle('-', 2, 3);
     }
 
-    //my picture 2 rectangle und 3 line
+
     @Bean
-    public ShapeFlow shapeFlow1(@Qualifier("rectangle") Shape[] rectangle,
+    public ShapeFlow shapeFlow1(@Qualifier("shapesForPicture1") List<Shape> shapesForPicture,
                                 Line line1,
                                 Line line2,
                                 Line line3,
                                 Picture picture) {
-        return new ShapeFlow(rectangle, line1, line2, line3, picture);
+        shapesForPicture.add(line1);
+        shapesForPicture.add(line2);
+        shapesForPicture.add(line3);
+        return new ShapeFlow(shapesForPicture, picture);
+    }
+
+    //my picture 2 rectangle und 3 line
+    @Bean
+    public ShapeFlow shapeFlow2(@Qualifier("rectangle") List<Shape> rectangle,
+                                Line line1,
+                                Line line3,
+                                Picture picture) {
+        rectangle.add(line1);
+        rectangle.add(line3);
+        return new ShapeFlow(rectangle, picture);
     }
 }
