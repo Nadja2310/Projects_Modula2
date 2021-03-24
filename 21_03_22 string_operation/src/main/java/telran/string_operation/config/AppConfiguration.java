@@ -77,12 +77,12 @@ public class AppConfiguration {
         }
     }
 
-    @Bean
+   /* @Bean
     public StringHandler handler(@Qualifier("context") OperationContext context,
                                  @Qualifier("printWriter") PrintWriter printWriter,
                                  @Qualifier("separator") String separator,
                                  @Qualifier("wrong_format") String wrong_format,
                                  @Qualifier("wrong_operation") String wrong_operation) {
         return new StringHandler(context, printWriter, separator, wrong_format, wrong_operation);
-    }
+    }*/
 }

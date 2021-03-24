@@ -1,11 +1,12 @@
 package telran.string_operation.service;
 
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
 import telran.string_operation.service.operation.IStringOperation;
 import telran.string_operation.OperationContext;
-
 import java.io.PrintWriter;
 
+@Component
 public class StringHandler {
     private final OperationContext context;
     private PrintWriter writer;
