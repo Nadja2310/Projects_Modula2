@@ -1,4 +1,4 @@
-package telran.shaps.service;
+package telran.shaps.entity;
 
 import org.springframework.stereotype.Service;
 import telran.shaps.entity.Shape;

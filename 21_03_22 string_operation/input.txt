@@ -1,0 +1,7 @@
+cat#ower_case#cat
+dog#upper_case
+bird
+bird#
+world#ipper_case
+world#upper_case
+CAR#lower_case
