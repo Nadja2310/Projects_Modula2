@@ -20,6 +20,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 @Configuration
+@EnableAsync
 public class AppConfiguration {
 
     @Bean
@@ -68,14 +69,15 @@ public class AppConfiguration {
         return wrong_oper;
     }
 
-    @Configuration
-    @EnableAsync
-    class AsyncConfig implements AsyncConfigurer {
-        @Bean()
-        public Executor getAsyncExecutor() {
-            return Executors.newFixedThreadPool(3);
-        }
+    /*  @Configuration
+
+      class AsyncConfig implements AsyncConfigurer {*/
+
+    @Bean()
+    public Executor getAsyncExecutor() {
+        return Executors.newFixedThreadPool(3);
     }
+    // }
 
    /* @Bean
     public StringHandler handler(@Qualifier("context") OperationContext context,

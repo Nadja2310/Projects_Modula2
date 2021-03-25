@@ -1,7 +1,7 @@
 cat#ower_case#cat#wrong format
-bird#wrong format
+car
 DOG
 bird##wrong format
-WORLD
 world#ipper_case#wrong operation
-car
+bird#wrong format
+WORLD
