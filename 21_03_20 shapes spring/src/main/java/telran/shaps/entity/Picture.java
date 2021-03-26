@@ -1,15 +1,19 @@
 package telran.shaps.entity;
 
-import org.springframework.stereotype.Service;
-import telran.shaps.entity.Shape;
-
 import java.util.List;
 
-@Service
-public class Picture {
+public class Picture extends Shape{
+    private List<Shape> shapes;
+    private final int lengthPage = 30;
 
-    public void print(List<Shape> shapesForPicture1) {
-        for (Shape shape : shapesForPicture1) {
+    public Picture(char symbol, List<Shape> shapes) {
+        super(symbol);
+        this.shapes = shapes;
+    }
+
+    @Override
+    public void draw() {
+        for (Shape shape : shapes) {
             shape.draw();
         }
     }
