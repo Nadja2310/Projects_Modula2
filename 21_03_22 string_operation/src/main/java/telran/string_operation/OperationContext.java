@@ -8,7 +8,6 @@ import java.util.Map;
 
 import static java.util.stream.Collectors.toMap;
 
-//@Component
 public class OperationContext {
 
     private final Map<String, IStringOperation> operationByName;

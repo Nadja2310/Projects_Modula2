@@ -1,5 +1,6 @@
 package telran.string_operation.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import telran.string_operation.service.operation.IStringOperation;
@@ -14,12 +15,12 @@ public class StringHandler {
     private final String wrong_format;
     private final String wrong_operation;
 
-    // TODO take constants from the application props file. Other configure in the AppConfiguration
     public StringHandler(OperationContext context,
                          PrintWriter writer,
-                         String separator,
-                         String wrong_format,
-                         String wrong_operation) {
+                         @Value("${telran.spring_operation.separation}") String separator,
+                         @Value("${telran.spring_operation.wrong_format}")String wrong_format,
+                         @Value("${telran.spring_operation.wrong_operation}")
+                                 String wrong_operation) {
         this.context = context;
         this.writer = writer;
         this.separator = separator;
