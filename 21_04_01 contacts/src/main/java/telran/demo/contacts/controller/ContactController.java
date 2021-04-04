@@ -38,7 +38,7 @@ public class ContactController {
 
     @GetMapping("/edit-contact/{id}")
     public String editContact(@PathVariable int id, Model model){
-        Contact contact = contactsList.get(0);//find by id
+        Contact contact = contactsList.get(id-1);//find by id
         model.addAttribute("contact", contact);
         return "contact-form";
     }
@@ -51,7 +51,7 @@ public class ContactController {
     @PostMapping("/save-contact")
     public String saveContact(@ModelAttribute Contact contact){
         if (contact.getId() > 0) {
-            int currIdx = 0; //find by id
+            int currIdx = contact.getId()-1; //find by id
             //Contact curr = contacts.get(0);
             contactsList.set(currIdx, contact);
 
@@ -65,7 +65,7 @@ public class ContactController {
 
     @GetMapping("/delete-contact/{id}")
     public String deleteContact(@PathVariable int id){
-        int currIdx = 0; //find by id
+        int currIdx = id-1; //find by id
         contactsList.remove(currIdx);
         return "redirect:/contacts";
     }

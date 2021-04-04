@@ -9,18 +9,18 @@
 <body>
 <div class="row">
     <div class="col m6 offset-m3">
-        <form class="col s12" action="/save-contact" method="post">
-            <input id="id" type="hidden" th:value="${contact.getId()}">
+        <form class="col s12" th:action="@{/save-contact}" th:object="${contact}" method="post">
+            <input id="id" name="id" type="hidden" th:field="*{id}">
             <div class="row">
                 <div class="input-field col s6">
-                    <input placeholder="Name" id="first_name" name="first_name" type="text" th:value="${contact.getName()}" class="validate">
-                    <label for="first_name">First Name</label>
+                    <input placeholder="Name" id="name" name="name" type="text" th:field="*{name}" class="validate">
+                    <label for="name">First Name</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s6">
-                    <input placeholder="last name" id="last_name"  name="last_name" type="text" th:value="${contact.getLastName()}" class="validate">
-                    <label for="last_name">Last Name</label>
+                    <input placeholder="last name" id="lastName"  name="lastName" type="text" th:field="*{lastName}" class="validate">
+                    <label for="lastName">Last Name</label>
                 </div>
             </div>
             <div class="row">
