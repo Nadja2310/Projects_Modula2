@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <title>Add/edit contact</title>
+</head>
+<body>
+<div class="row">
+    <div class="col m6 offset-m3">
+        <form class="col s12" action="/save-contact" method="post">
+            <input id="id" type="hidden" th:value="${contact.getId()}">
+            <div class="row">
+                <div class="input-field col s6">
+                    <input placeholder="Name" id="first_name" name="first_name" type="text" th:value="${contact.getName()}" class="validate">
+                    <label for="first_name">First Name</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s6">
+                    <input placeholder="last name" id="last_name"  name="last_name" type="text" th:value="${contact.getLastName()}" class="validate">
+                    <label for="last_name">Last Name</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col m6">
+                    <label>Age: <input type="number" name="age" th:value="${contact.getAge()}" min="18" max="120"></label>
+                </div>
+            </div>
+            <div class="row">
+                <input type="submit" class="waves-effect waves-light btn indigo darken-3" value="Save">
+                <a class="waves-effect waves-light btn indigo darken-3" th:href="'/contacts/'">Cancel</a>
+            </div>
+        </form>
+
+
+    </div>
+</div>
+
+
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</body>
+</html>
