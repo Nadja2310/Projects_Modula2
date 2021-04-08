@@ -28,6 +28,7 @@ public class ContactController {
     }
 
     @GetMapping("/contacts")
+    // @GetMapping({"/contacts","/"}) можно сразу указать все страницы,что будут использовать
     public String contacts(Model model) {
         model.addAttribute("contacts", contactsList);
         return "contacts";
@@ -73,9 +74,15 @@ public class ContactController {
 
     @GetMapping("/delete-contact/{id}")
     public String deleteContact(@PathVariable int id) {
-        int currIdx = getIndex(id);
-        contactsList.remove(currIdx);
+/*        int currIdx = getIndex(id);
+        contactsList.remove(currIdx);*/
+        contactsList.removeIf(cont -> cont.getId()==id);
         return "redirect:/contacts";
     }
 
+    @GetMapping("/")
+    public String homePage() {
+     //   return "redirect:/contacts";
+        return "forward:/contacts";
+    }
 }
