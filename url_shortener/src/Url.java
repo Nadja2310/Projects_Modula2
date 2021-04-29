@@ -14,10 +14,8 @@ public class Url {
         // murmurhash (long) -> byte[] -> base64 -> substring (3);
         long hash64bit = hash64(longUrl);
         byte[] arrByte = longToBytes(hash64bit);
-        System.out.println(Arrays.toString(arrByte));
         String base64String = Base64.getUrlEncoder().encodeToString(arrByte);
 
-        System.out.println("encodedBytes " + base64String);
         return base64String.substring(3,base64String.length()-1);
     }
     /**
